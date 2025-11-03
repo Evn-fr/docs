@@ -71,9 +71,9 @@ nano /etc/haproxy/haproxy.cfg
 
 # Ajouter à la fin
 listen httpProxy
-bind 172.16.0.13
-balance roundrobin
-option httpclose
-option httpchk HEAD / HTTP/1.0
-server serv1 192.168.0.1:80 check
-server serv2 192.168.0.2:80 check
+  bind 172.16.0.13
+  balance roundrobin
+  option httpclose
+  option httpchk HEAD / HTTP/1.0
+  server serv1 192.168.0.1:80 check
+  server serv2 192.168.0.2:80 check
