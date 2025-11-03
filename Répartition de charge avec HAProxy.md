@@ -128,3 +128,9 @@ cat cert.pem privateKey.pem > sodecaf.pem
 
 # Dans /etc/haproxy/haproxy.cfg modifier la ligne dans frontend websodecaf
   bind 172.16.0.13:443 ssl crt /etc/haproxy/cert/sodecaf.pem
+
+# Rediriger les requêtes HTTP (80) vers HTTPS (443)
+frontend sodecafhttp
+  bind 172.16.0.13 :80
+  http-request redirect scheme https unless { ssl_fc }
+  default_backend fermeweb
