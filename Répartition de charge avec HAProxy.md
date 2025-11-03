@@ -92,4 +92,39 @@ nano /etc/haproxy/haproxy.cfg
 http://[IpAddr]/statsHaproxy
   > Login
   > MDP
+# Revenir dans le fichier nano /etc/haproxy/haproxy.cfg et ajouter avant listen httpProxy
+frontend websodecaf
+  bind 172.16.0.13:80
+  default_backend clusterweb
 
+# Puis modifier listen httpProxy en
+backend clusterweb
+
+# Affecter un poid sur chaque serveur (entre 0 et 255) dans backend clusteweb (roundrobin pondéré)
+  server serv1 192.168.0.1:80 weight 100 check
+  server serv2 192.168.0.2:80 weight 50 check
+
+# Installation d'OpenSSL pour générer des clés
+
+apt install openssl
+
+# Création d'un dossier et cd dans celui-ci
+mkdir /etc/haproxy/cert
+cd /etc/haproxy/cert
+
+# Génération des clés
+openssl genrsa -out /etc/haproxy/cert/privateKey.pem 4096
+openssl req -new -x509 -days 365 -key /etc/haproxy/cert/privateKey.pem -out /etc/haproxy/cert/cert.pem
+  > Language (FR)
+  > Country
+  > City
+  > Organization name
+  > Unit name
+  > FQDN
+  > Email
+
+# On fusionne ensuite le certificat et la clé privée dans un même fichier :
+cat cert.pem privateKey.pem > sodecaf.pem
+
+# Dans /etc/haproxy/haproxy.cfg modifier la ligne dans frontend websodecaf
+  bind 172.16.0.13:443 ssl crt /etc/haproxy/cert/sodecaf.pem
