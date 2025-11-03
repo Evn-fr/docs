@@ -145,3 +145,50 @@ Interface > Assignation > Assigner la nouvelle carte réseau (DMZ)
 Système > Firmware > Greffons > Chercher un Greffons et cochant la case show community plugins
   > haproxy
 
+# Création de 2 serveurs réels
+✅ Activé    SRV-WEB1    statique    192.168.0.1    80
+✅ Activé    SRV-WEB2    statique    192.168.0.2    80
+
+# Dans Système > Gestion des certificats > Autorités
+Ajouter
+
+Importer une CA existante
+CA SODECAF
+[Données du certificat]
+[Données de la clé privée]
+
+
+
+# Dans Services > HAProxy > Paramètres et Serveurs réels
+> Sélectionner Backend Pools
+
+# Création d'une solution Backend
+> Backend Pools
+
+> Activé
+Nom : BACKEND-WEB-SODECAF
+Mode : HTTP (Couche 7) [par défaut]
+Algo : "Round-Robin"
+Serveurs : [SRV-WEB1] [SRV-WEB2]
+
+# Services > HAProxy > Paramètres et Service Public
+> Activé
+> frontend-web-https
+> [IP WAN OPNsens]:443
+> SSL /HTTPS (mode TCP)
+> ✅ Activer le délestage SSL
+> [Certificat WEB]
+> Vérification : requis
+
+# Ouverture du port 443 
+Pare-feu > Règles > WAN
+
+✅ Ajouter
+
+> Action : Autoriser
+> Interface : WAN
+> Version TCP/IP : IPv4
+> Protocole : TCP
+> Source : any
+> Destionation : WAN adresse
+> Plage de ports de destination : HTTPS
