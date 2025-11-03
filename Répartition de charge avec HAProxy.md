@@ -134,3 +134,14 @@ frontend sodecafhttp
   bind 172.16.0.13 :80
   http-request redirect scheme https unless { ssl_fc }
   default_backend fermeweb
+
+# Passage sur OPNsense
+Dans les paramètres de VMWare ajouter un Network Adapter en LAN Segment (DMZ Sodecaf)
+
+Mettre à jour OPNsense
+
+Interface > Assignation > Assigner la nouvelle carte réseau (DMZ)
+
+Système > Firmware > Greffons > Chercher un Greffons et cochant la case show community plugins
+  > haproxy
+
