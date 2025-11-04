@@ -1,10 +1,12 @@
 # SRV-WEB1
+```
 crm resource stop serviceWeb
 crm resource stop IPFailover
 crm configure delete servweb
 crm resource start IPFailover
 crm configure clone cServiceWeb serviceWeb
 crm resource start serviceWeb
+```
 
 # Dans /etc/network/interfaces
 address 192.168.0.1/24
