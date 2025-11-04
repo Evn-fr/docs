@@ -9,46 +9,65 @@ crm resource start serviceWeb
 ```
 
 # Dans /etc/network/interfaces
+```
 address 192.168.0.1/24
 gateway 192.168.0.254
+```
 
 # Dans /etc/network/interfaces de SRV-WEB2
+```
 address 192.168.0.2/24
 gateway 192.168.0.254
+```
 
 # Retour sur SRV-WEB1
+```
 crm configure edit
+```
 
 # Dans CRM Configure Edit (ouvert utilisant Vi)
 # Dans node 2 après le paramètre "params ip" changer l'adresse :
+```
 192.168.0.3
+```
 
 # Dans les paramètre VMWare de SRV-WEB1 (Network Adapter) créer un LAN Segment DMZ Sodecaf puis le sélectionner
 # Dans les paramètre VMWare de SRV-WEB2, connecter le LAN Segment DMZ SODECAF
 
 # Désactivation d'un site en HTTPS pour en activer un autre en HTTP (à  faire sur SRV-WEB1 et 2)
+```
 a2dissite appliFrais.conf
 a2ensite sodecaf.conf
 systectl reload apache2
+```
 
 # Création d'une VM Debian12 shell
+```
 apt update
 apt upgrade
+```
 
 # Renommer la machine dans /etc/hosts et /etc/hostname
+```
 haproxy
+```
+
 # Sur SRV-WEB1 et 2
+```
 cd /var/www/sodecaf
 nano sodecaf.html
+```
 
-Ctrl + W
+_Ctrl + W > "Accueil"_
 
-Ajouter un signe pour distinguer les deux SRV-WEB (exemple ici Accueil 1 pour server 1 et Accueil 2 pour server 2)
+_Ajouter un signe pour distinguer les deux SRV-WEB (exemple ici Accueil 1 pour server 1 et Accueil 2 pour server 2)_
 
 # Création d'une VM HAProxy
 # Renommer la VM en haproxy puis reboot pour appliquer les changements
+```
 nano /etc/hosts
 nano /etc/hostname
+```
 
 reboot
 
@@ -57,6 +76,7 @@ reboot
 # Network Adapter 2 en LAN Segment (DMZ SODECAF)
 
 # Modifier les IPs des interfaces pour avoir un pied dans le LAN Sodecaf et un autre dans la DMZ
+```
 nano /etc/network/interfaces
 
 allow-hotplug [NomCarteReseau1]
@@ -67,11 +87,15 @@ iface [NomCarteReseau1] inet static
 allow-hotplug [NomCarteReseau2]
 iface [NomCarteReseau2] inet static
   address 192.168.0.254
+```
 
 # Config du fichier haproxy.cfg
+```
 nano /etc/haproxy/haproxy.cfg
+```
 
 # Ajouter à la fin
+```
 listen httpProxy
   bind 172.16.0.13
   balance roundrobin
@@ -79,42 +103,60 @@ listen httpProxy
   option httpchk HEAD / HTTP/1.0
   server serv1 192.168.0.1:80 check
   server serv2 192.168.0.2:80 check
+```
 
 # Tester le basculement des 2 serveurs web
 
 # Config du fichier haproxy.cfg
+```
 nano /etc/haproxy/haproxy.cfg
+```
 
 # Ajouter à la fin
+```
   stats uri /statsHaproxy
   stats auth root:Btssio2017
   stats refresh 30s
+```
 
 # Tester le fonctionnement du site
+```
 http://[IpAddr]/statsHaproxy
   > Login
   > MDP
+```
+
 # Revenir dans le fichier nano /etc/haproxy/haproxy.cfg et ajouter avant listen httpProxy
+```
 frontend websodecaf
   bind 172.16.0.13:80
   default_backend clusterweb
+```
 
 # Puis modifier listen httpProxy en
+```
 backend clusterweb
+```
 
 # Affecter un poid sur chaque serveur (entre 0 et 255) dans backend clusteweb (roundrobin pondéré)
+```
   server serv1 192.168.0.1:80 weight 100 check
   server serv2 192.168.0.2:80 weight 50 check
+```
 
 # Installation d'OpenSSL pour générer des clés
-
+```
 apt install openssl
+```
 
 # Création d'un dossier et cd dans celui-ci
+```
 mkdir /etc/haproxy/cert
 cd /etc/haproxy/cert
+```
 
 # Génération des clés
+```
 openssl genrsa -out /etc/haproxy/cert/privateKey.pem 4096
 openssl req -new -x509 -days 365 -key /etc/haproxy/cert/privateKey.pem -out /etc/haproxy/cert/cert.pem
   > Language (FR)
@@ -124,18 +166,25 @@ openssl req -new -x509 -days 365 -key /etc/haproxy/cert/privateKey.pem -out /etc
   > Unit name
   > FQDN
   > Email
+```
 
 # On fusionne ensuite le certificat et la clé privée dans un même fichier :
+```
 cat cert.pem privateKey.pem > sodecaf.pem
+```
 
 # Dans /etc/haproxy/haproxy.cfg modifier la ligne dans frontend websodecaf
+```
   bind 172.16.0.13:443 ssl crt /etc/haproxy/cert/sodecaf.pem
+```
 
 # Rediriger les requêtes HTTP (80) vers HTTPS (443)
+```
 frontend sodecafhttp
   bind 172.16.0.13 :80
   http-request redirect scheme https unless { ssl_fc }
   default_backend fermeweb
+```
 
 # Passage sur OPNsense
 Dans les paramètres de VMWare ajouter un Network Adapter en LAN Segment (DMZ Sodecaf)
@@ -148,8 +197,10 @@ Système > Firmware > Greffons > Chercher un Greffons et cochant la case show co
   > haproxy
 
 # Création de 2 serveurs réels
+```
 ✅ Activé    SRV-WEB1    statique    192.168.0.1    80
 ✅ Activé    SRV-WEB2    statique    192.168.0.2    80
+```
 
 # Dans Système > Gestion des certificats > Autorités
 Ajouter
