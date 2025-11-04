@@ -203,19 +203,22 @@ Système > Firmware > Greffons > Chercher un Greffons et cochant la case show co
 ```
 
 # Dans Système > Gestion des certificats > Autorités
+```
 Ajouter
 
 Importer une CA existante
 CA SODECAF
 [Données du certificat]
 [Données de la clé privée]
-
-
+```
 
 # Dans Services > HAProxy > Paramètres et Serveurs réels
+```
 > Sélectionner Backend Pools
+```
 
 # Création d'une solution Backend
+```
 > Backend Pools
 
 > Activé
@@ -223,8 +226,10 @@ Nom : BACKEND-WEB-SODECAF
 Mode : HTTP (Couche 7) [par défaut]
 Algo : "Round-Robin"
 Serveurs : [SRV-WEB1] [SRV-WEB2]
+```
 
 # Services > HAProxy > Paramètres et Service Public
+```
 > Activé
 > frontend-web-https
 > [IP WAN OPNsense]:443
@@ -232,8 +237,10 @@ Serveurs : [SRV-WEB1] [SRV-WEB2]
 > ✅ Activer le délestage SSL
 > [Certificat WEB]
 > Vérification : requis
+```
 
 # Ouverture du port 443 
+```
 Pare-feu > Règles > WAN
 
 ✅ Ajouter
@@ -245,3 +252,4 @@ Pare-feu > Règles > WAN
 > Source : any
 > Destionation : WAN adresse
 > Plage de ports de destination : HTTPS
+```
