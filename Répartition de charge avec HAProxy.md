@@ -174,7 +174,7 @@ Serveurs : [SRV-WEB1] [SRV-WEB2]
 # Services > HAProxy > Paramètres et Service Public
 > Activé
 > frontend-web-https
-> [IP WAN OPNsens]:443
+> [IP WAN OPNsense]:443
 > SSL /HTTPS (mode TCP)
 > ✅ Activer le délestage SSL
 > [Certificat WEB]
