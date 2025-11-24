@@ -28,12 +28,12 @@ sudo apt-get install curl lsb-release ca-certificates gnupg2 pwgen
 
 # Téléchaargement de la clé GPG qui correspond au dépôt de MongoDB
 ```
-curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg --dearmor
+curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | gpg -o /usr/share/keyrings/mongodb-server-6.0.gpg --dearmor
 ```
 
 # Ajout du dépôt MongoDB sur la machine Debian12
 ```
-echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 ```
 
 # Mise à jour des paquets
@@ -69,3 +69,56 @@ systemctl restart mongod.service
 systemctl --type=service --state=active | grep mongod
 ```
 
+# Ajout de la clé de signature OpenSearch
+```
+curl -o- https://artifacts.opensearch.org/publickeys/opensearch.pgp | gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-keyring
+```
+
+# Ajout du dépôt d'OpenSearch
+```
+echo "deb [signed-by=/usr/share/keyrings/opensearch-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch/2.x/apt stable main" | tee /etc/apt/sources.list.d/opensearch-2.x.list
+```
+
+# Mettre à jour le cache des paquets
+```
+apt-get update
+```
+
+# Installation d'OpenSearch avec la définition d'un mot de passe (min/maj/special)
+```
+sudo env OPENSEARCH_INITIAL_ADMIN_PASSWORD=IT-Connect2024! apt-get install opensearch
+```
+
+# Ouverture du fichier de conf opensearch.yml
+```
+sudo nano /etc/opensearch/opensearch.yml
+
+cluster.name: graylog
+node.name: ${HOSTNAME}
+path.data: /var/lib/opensearch
+path.logs: /var/log/opensearch
+
+------------------------------------------------------------------
+Ajout dans la section discovery en dessous de discovery.seed :
+discovery.type: single-node
+------------------------------------------------------------------
+
+network.host: 127.0.0.1
+action.auto_create_index: false
+plugins.security.disabled: true
+```
+
+# Configuration de Java (JVM) pour une config à 4go de RAM max
+```
+sudo nano /etc/opensearch/jvm.options
+
+-Xms1g
+-Xmx1g
+```
+
+# Activation du démarrage auto d'OpenSearch
+```
+systemctl daemon-reload
+systemctl enable opensearch
+systemctl restart opensearch
+```
