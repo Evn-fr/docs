@@ -3,7 +3,7 @@
 > Une machine Kali Linux (ici Kali v2025.2)
 > Une machine Metasploitable
 > Kali : 172.16.0.30
-                                              } 172.16.0.0/24
+                                          } 172.16.0.0/24
 > Metasploitable : 172.16.0.102
 ```
 
