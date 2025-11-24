@@ -122,3 +122,53 @@ systemctl daemon-reload
 systemctl enable opensearch
 systemctl restart opensearch
 ```
+
+# Téléchergement et installation de Graylog dans sa dernière version
+```
+wget https://packages.graylog2.org/repo/packages/graylog-6.1-repository_latest.deb
+dpkg -i graylog-6.1-repository_latest.deb
+apt-get update
+apt-get install graylog-server
+```
+
+# Création d'une clé de 96 caractères
+```
+pwgen -N 1 -s 96
+
+Exemple ici
+wVSGYwOmwBIDmtQvGzSuBevWoXe0MWpNWCzhorBfvMMhia2zIjHguTbfl4uXZJdHOA0EEb1sOXJTZKINhIIBm3V57vwfQV59
+```
+
+# Coller le mot de passe dans password_secret
+```
+nano /etc/graylog/server/server.conf
+```
+
+# Création du compte admin (avec exemple de clé)
+```
+echo -n "Password" | shasum -a 256
+6b297230efaa2905c9a746fb33a628f4d7aba4fa9d5c1b3daa6846c68e602d71
+```
+
+# Coller la valeur retournée dans root_password_sha2
+```
+nano /etc/graylog/server/server.conf
+```
+
+# Ajouter les valeurs suivantes :
+```
+http_bind_address = 0.0.0.0:9000
+--------------------------------
+elasticsearch_hosts = http://127.0.0.1:9200
+```
+
+# Démarrer automatiquement Graylog au démarrage
+```
+systemctl enable --now graylog-server
+```
+
+# Accéder à l'interface Web
+```
+admin
+Password
+```
