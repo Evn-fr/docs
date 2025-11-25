@@ -50,7 +50,9 @@ apt upgrade
 # Renommer la machine dans /etc/hosts et /etc/hostname
 ```
 haproxy
+
 ```
+_reboot pour appliquer les changements_
 
 # Sur SRV-WEB1 et 2
 ```
@@ -61,15 +63,6 @@ nano sodecaf.html
 _Ctrl + W > "Accueil"_
 
 _Ajouter un signe pour distinguer les deux SRV-WEB (exemple ici Accueil 1 pour server 1 et Accueil 2 pour server 2)_
-
-# Création d'une VM HAProxy
-# Renommer la VM en haproxy puis reboot pour appliquer les changements
-```
-nano /etc/hosts
-nano /etc/hostname
-```
-
-reboot
 
 # Ajouter dans les paramètres VMWare de haproxy une carte réseau (Network Adapter)
 # Network Adapter 1 en Host-only
