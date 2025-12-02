@@ -69,9 +69,9 @@ _Ajouter un signe pour distinguer les deux SRV-WEB (exemple ici Accueil 1 pour s
 # Network Adapter 2 en LAN Segment (DMZ SODECAF)
 
 # Modifier les IPs des interfaces pour avoir un pied dans le LAN Sodecaf et un autre dans la DMZ
-```
-nano /etc/network/interfaces
+_nano /etc/network/interfaces_
 
+```
 allow-hotplug [NomCarteReseau1]
 iface [NomCarteReseau1] inet static
   address 172.16.0.13/24
@@ -96,6 +96,11 @@ listen httpProxy
   option httpchk HEAD / HTTP/1.0
   server serv1 192.168.0.1:80 check
   server serv2 192.168.0.2:80 check
+```
+# Téléchergement du paquet HAProxy
+```
+apt update
+apt install haproxy
 ```
 
 # Tester le basculement des 2 serveurs web
