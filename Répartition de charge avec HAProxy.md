@@ -82,6 +82,12 @@ iface [NomCarteReseau2] inet static
   address 192.168.0.254
 ```
 
+# Téléchargement du paquet HAProxy
+```
+apt update
+apt install haproxy
+```
+
 # Config du fichier haproxy.cfg
 ```
 nano /etc/haproxy/haproxy.cfg
@@ -96,11 +102,6 @@ listen httpProxy
   option httpchk HEAD / HTTP/1.0
   server serv1 192.168.0.1:80 check
   server serv2 192.168.0.2:80 check
-```
-# Téléchergement du paquet HAProxy
-```
-apt update
-apt install haproxy
 ```
 
 # Tester le basculement des 2 serveurs web
