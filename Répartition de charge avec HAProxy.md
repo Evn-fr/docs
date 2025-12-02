@@ -96,7 +96,7 @@ nano /etc/haproxy/haproxy.cfg
 # Ajouter à la fin
 ```
 listen httpProxy
-  bind 172.16.0.13
+  bind 172.16.0.13:80
   balance roundrobin
   option httpclose
   option httpchk HEAD / HTTP/1.0
