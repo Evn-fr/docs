@@ -180,7 +180,7 @@ cat cert.pem privateKey.pem > sodecaf.pem
 # Rediriger les requêtes HTTP (80) vers HTTPS (443)
 ```
 frontend sodecafhttp
-  bind 172.16.0.13 :80
+  bind 172.16.0.13:80
   http-request redirect scheme https unless { ssl_fc }
   default_backend fermeweb
 ```
