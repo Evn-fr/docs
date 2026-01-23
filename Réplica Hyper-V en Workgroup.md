@@ -6,7 +6,7 @@
 
 # 1. Résolution de noms (Fichier Hosts)
 Sans serveur DNS de domaine, les serveurs doivent pouvoir se "voir" par leur nom d'hôte.
-●	Sur chaque serveur, éditer le fichier : ```C:\Windows\System32\drivers\etc\hosts.```
-●	Ajouter l'adresse IP et le nom de l'autre serveur.
-●	Exemple depuis Serv1 : ```172.17.1.2 Serv2```
-●	Exemple depuis Serv2 : ```172.17.1.1 Serv1```
+- Sur chaque serveur, éditer le fichier : ```C:\Windows\System32\drivers\etc\hosts.```
+- Ajouter l'adresse IP et le nom de l'autre serveur.
+- Exemple depuis Serv1 : ```172.17.1.2 Serv2```
+- Exemple depuis Serv2 : ```172.17.1.1 Serv1```
