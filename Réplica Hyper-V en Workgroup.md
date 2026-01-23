@@ -10,3 +10,7 @@ Sans serveur DNS de domaine, les serveurs doivent pouvoir se "voir" par leur nom
 - Ajouter l'adresse IP et le nom de l'autre serveur.
 - Exemple depuis Serv1 : ```172.17.1.2 Serv2```
 - Exemple depuis Serv2 : ```172.17.1.1 Serv1```
+
+# 2. Création de certificats (PowerShell)
+Il faut générer des certificats auto-signés. Pour que cela fonctionne, le certificat doit supporter à la fois l'Authentification Client et l'Authentification Serveur.
+Exécuter ces commandes sur le Serveur Principal :
