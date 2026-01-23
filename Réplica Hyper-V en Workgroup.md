@@ -44,10 +44,20 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization\Replic
 
 # 4. Configuration du serveur de réplica
 Sur le serveur qui va recevoir la VM (le réplica) :
-1.	Ouvrez le Gestionnaire Hyper-V.
-2.	Faire un clic droit sur le serveur > Paramètres Hyper-V.
-3.	Aller dans Configuration de la réplication.
-4.	Cocher Activer ce ordinateur en tant que serveur de réplication.
-5.	Cocher Utiliser l'authentification par certificat (HTTPS) (Port 443).
-6.	Cliquer sur Sélectionner un certificat et choisir celui qui a été créé.
-7.	Sélectionner Autoriser la réplication à partir de n'importe quel serveur authentifié ou sélectionner des partenaires de réplication spécifiques.
+
+1.	Ouvrez le **Gestionnaire Hyper-V**.
+2.	Faire un clic droit sur le serveur > **Paramètres Hyper-V**.
+3.	Aller dans **Configuration de la réplication**.
+4.	Cocher **Activer ce ordinateur en tant que serveur de réplication**.
+5.	Cocher **Utiliser l'authentification par certificat (HTTPS)** (Port 443).
+6.	Cliquer sur **Sélectionner un certificat** et choisir celui qui a été créé.
+7.	Sélectionner **Autoriser la réplication à partir de n'importe quel serveur authentifié** ou sélectionner des partenaires de réplication spécifiques.
+
+# 5. Activation de la réplication sur la VM
+Sur le **serveur source** :
+
+1.	Faire un clic droit sur la VM à répliquer > **Activer la réplication**.
+2.	Saisir le nom du serveur de réplica (le nom exact renseigné dans le fichier hosts).
+3.	Choisir A**uthentification par certificat**.
+4.	Sélectionner votre certificat local.
+5.	Choisir la fréquence (30s, 5m ou 15m) et terminer l'assistant.
