@@ -160,4 +160,34 @@ cat *.sql | mysql -u root -p guacadb
 # Ouverture et edit du fichier guacamole.properties
 ```
 nano /etc/guacamole/guacamole.properties
+
+# MySQL
+  mysql-hostname: 127.0.0.1
+  mysql-port: 3306
+  mysql-database: guacadb
+  mysql-username: guaca_user
+  mysql-password: YourObviouslySecuredPassword
+```
+
+# Déclaration du serveur Guacamole
+```
+nano /etc/guacamole/guacd.conf
+
+[server] 
+  bind_host = 0.0.0.0
+  bind_port = 4822
+```
+
+# Restart des services tomcat, guacd et mariadb
+```
+systemctl restart tomcat9 guacd mariadb
+```
+
+# Accès à l'interface Web de Guacamole
+```
+http://<Adresse IP>:8080/guacamole/
+
+Identifiants (par défaut):
+>  guacadmin
+>  guacadmin
 ```
