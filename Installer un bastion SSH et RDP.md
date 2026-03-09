@@ -202,7 +202,46 @@ systemctl daemon-reload
 systemctl restart guacd
 ```
 
-# ===========[ Setup MFA ]===========
+# Setup de la MFA
+# Téléchargement de l'extension "auth-totp"
+```
+cd /tmp
+wget https://downloads.apache.org/guacamole/1.6.0/binary/guacamole-auth-totp-1.6.0.tar.gz
 ```
 
+# Décompression de l'archive
+```
+tar -xzf guacamole-auth-totp-1.6.0.tar.gz
+```
+
+# Déplacement du fichier dans le répertoire extensions de Guacamole
+```
+mv guacamole-auth-totp-1.6.0/guacamole-auth-totp-1.6.0.jar /etc/guacamole/extensions/
+```
+
+# Configuration de guacamole.properties
+```
+nano /etc/guacamole/guacamole.properties
+
+# TOTP
+  totp-issuer: Guacamole 2026
+  totp-digits: 6
+  totp-period: 30
+  totp-mode: sha1
+
+```
+
+# Rdémarrage du service tomcat9
+```
+systemctl restart tomcat9
+```
+
+# Problème possible : décalage horaire
+Il est possible d'avoir un léger décalage horaire, rendant immpossible l'utilisation du MFA (même de quelques secondes)
+Pour palier à ce problème, il faut aller dans le fichier timesyncd.conf, décommenter la ligne du NTP et y mettre de prépéfrence un serveur NTP local.
+```
+nano /etc/systemd/timesyncd.conf
+NTP=exemple.serveur-ntp.fr
+systemctl restart systemd-timesyncd.service
+timedatectl
 ```
