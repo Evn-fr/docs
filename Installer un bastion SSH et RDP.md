@@ -201,3 +201,8 @@ sed -i 's/daemon/guacd/' etc/systemd/system/guacd.service
 systemctl daemon-reload
 systemctl restart guacd
 ```
+
+# ===========[ Setup MFA ]===========
+```
+
+```
